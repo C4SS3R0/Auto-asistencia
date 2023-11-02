@@ -3,6 +3,14 @@ import time
 import keyboard
 import win32api, win32con
 
+nombre = "matias"
+
+apellido = "cassero lombardi"
+
+dni = "43627827"
+
+url = "https://docs.google.com/forms/d/e/1FAIpQLSdQp76cRFGK42BL2JtOTPZRrzilBI_jdZLc6QMZjTzZgX9FYQ/viewform"
+
 def sleep (dur) :
     time.sleep(dur)
 
@@ -13,46 +21,23 @@ def click (x,y):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     sleep(0.3)
 
-def nombre () :
-    pyautogui.keyDown('shift')
-    pyautogui.press('m')
-    pyautogui.keyUp('shift')
-    pyautogui.press('a')
-    pyautogui.press('t')
-    pyautogui.press('i')
-    pyautogui.press('a')
-    pyautogui.press('s')
+def escDNI () :
+    for caracter in dni :
+        pyautogui.press(caracter)
+        
 
-def apellido () :
-    pyautogui.keyDown('shift')
-    pyautogui.press('c')
-    pyautogui.keyUp('shift')
-    pyautogui.press('a')
-    pyautogui.press('s', presses=2)
-    pyautogui.press('e')
-    pyautogui.press('r')
-    pyautogui.press('o')
-    pyautogui.press('space')
-    pyautogui.keyDown('shift')
-    pyautogui.press('l')
-    pyautogui.keyUp('shift')
-    pyautogui.press('o')
-    pyautogui.press('m')
-    pyautogui.press('b')
-    pyautogui.press('a')
-    pyautogui.press('r')
-    pyautogui.press('d')
-    pyautogui.press('i')
-
-def dni () :
-    pyautogui.press('4')
-    pyautogui.press('3')
-    pyautogui.press('6')
-    pyautogui.press('2')
-    pyautogui.press('7')
-    pyautogui.press('8')
-    pyautogui.press('2')
-    pyautogui.press('7')
+def escribir (valor) :
+    lastCar = ""
+    for caracter in valor :
+        if caracter == " ":
+            pyautogui.press('space')
+        if lastCar == " " or lastCar == "" :
+            pyautogui.keyDown('shift')
+            pyautogui.press(caracter)
+            pyautogui.keyUp('shift')
+        else :
+            pyautogui.press(caracter)
+        lastCar = caracter
 
 def probar () :
     pyautogui.hotkey('alt', 'tab')
@@ -64,17 +49,17 @@ def probar () :
     click(1581, 392)
     sleep(3)
     pyautogui.press('tab', presses=3)
-    nombre()
+    escribir(nombre)
     pyautogui.press('tab')
-    apellido()
+    escribir(apellido)
     pyautogui.press('tab')
-    dni()
+    escDNI()
     pyautogui.press('tab')
     pyautogui.press('right', presses=4)
     pyautogui.press('tab', presses=3)
-    # pyautogui.press('enter')
+    pyautogui.press('enter')
 
 
-sleep(5)
+sleep(3)
 
 probar()
