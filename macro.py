@@ -1,65 +1,111 @@
 import pyautogui
 import time
-import keyboard
-import win32api, win32con
 
-nombre = "matias"
+'''
+ESTE CODIGO SOLO FUNCIONA PARA FORMULARIOS DE GOOGLE DONDE SU ORDEN SEA OBLIGATORIAMENTE
 
-apellido = "cassero lombardi"
+#NOMBRE
+#APELLIDO
+#DNI
+#RATING 1-5 
+#COMENTARIOS
+#ENVIAR
 
-dni = "43627827"
+HAGAN TODOS LOS CAMBIOS NECESARIOS PARA QUE LES FUNCIONE A USTEDES
 
-url = "https://docs.google.com/forms/d/e/1FAIpQLSdQp76cRFGK42BL2JtOTPZRrzilBI_jdZLc6QMZjTzZgX9FYQ/viewform"
+ES NECESARIO TENER DESCARGADA LA LIBRERIA DE PYAUTOGUI
+https://pyautogui.readthedocs.io/en/latest/install.html
+'''
+# Entre las comillas ingrese su nombre
+nombre = ""
 
+# Entre las comillas ingrese su apellido o apellidos, separados por un espacio
+apellido = ""
+
+# Entre las comillas ingrese su DNI sin puntos ni espacios. Ej: 12345678
+dni = ""
+
+# Ingrese el link del formulario entre las comillas
+url = ""
+
+# Esta funcion le da un descanso de duracion = dur al codigo, es mas que nada para que deje cargar la pogina y no empiece a escribir antes de tiempo
 def sleep (dur) :
     time.sleep(dur)
 
-def click (x,y):
-    win32api.SetCursorPos((x,y))
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
-    sleep(0.1)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
-    sleep(0.3)
-
+# Funcion que recorre y escribe el DNI
 def escDNI () :
     for caracter in dni :
         pyautogui.press(caracter)
-        
 
+# Funcion que recorre y escribe el link y luego ingresa al mismo
+def escURL () :
+    for caracter in url :
+        pyautogui.press(caracter)
+    pyautogui.press('enter')
+
+# Funcion que recorre y escribe la variable dada a cambio de valor, que son "nombre" y "apellido"
 def escribir (valor) :
+
+    # Guardamos el ultimo caracter usado, al llamarse la funcion, el ultimo caracter es "" (str vacio)
     lastCar = ""
+
+        # Recorremos valor.  
     for caracter in valor :
         if caracter == " ":
-            pyautogui.press('space')
+            # En pyautogui para tocar el spacebar se usa 'space', asi que cuando detecta que el caracter es un " " usa 'space'.
+            pyautogui.press('space') 
+
         if lastCar == " " or lastCar == "" :
+            # si el ultimo caracter fue "" (str vacio) o " " (espacio), la siguiente letra sera en Mayuscula.
             pyautogui.keyDown('shift')
             pyautogui.press(caracter)
             pyautogui.keyUp('shift')
+
         else :
+            # Si el ultimo caracter fue cualquier otro, simplemente lo escribe normal
             pyautogui.press(caracter)
         lastCar = caracter
 
 def probar () :
+    # sale de la terminal
     pyautogui.hotkey('alt', 'tab')
+
+    # abre una pagina nueva
     pyautogui.hotkey('ctrl', 't')
+
+    # descansa 0.2s
     sleep(0.2)
-    click(1203, 118)
-    click(1179, 186)
-    click(1335, 179)
-    click(1581, 392)
-    sleep(3)
+
+    # llama a escribir url ya que al abrir una pagina nueva hace focus a la barra de navegador
+    escURL()
+
+    # descansa 4s como para que cargue la pagina
+    sleep(4)
+
+    # aca empieza lo que pueden modificar, que en mi caso, son necesarios 3 tabs para llegar al primer input que es el de nombre
     pyautogui.press('tab', presses=3)
+
+    
     escribir(nombre)
+
     pyautogui.press('tab')
+
     escribir(apellido)
+
     pyautogui.press('tab')
+
     escDNI()
+
     pyautogui.press('tab')
+
+    #Marca como puntaje 5 
     pyautogui.press('right', presses=4)
+
     pyautogui.press('tab', presses=3)
+
     pyautogui.press('enter')
 
-
+# Espera 3 segundos antes de empezar el codigo
 sleep(3)
 
 probar()
